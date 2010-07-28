@@ -1,9 +1,12 @@
 require File.expand_path('../boot', __FILE__)
 
+require 'rails/all'
+Bundler.require :default, Rails.env
+
 module Typo
   class Application < Rails::Application
     # Skip frameworks you're not going to use
-    config.frameworks -= [ :active_resource ]
+    #config.frameworks -= [ :active_resource ]
   
     # Setup the cache path
     config.action_controller.page_cache_directory = "#{Rails.root}/public/cache/"
@@ -15,7 +18,7 @@ module Typo
     # Forcing manually the load of the textfilters plugins fixes the bugs with apache in production.
     config.plugins = [ :localization, :all ]
     
-    config.load_paths += %W(
+    config.autoload_paths += %W(
       vendor/rubypants
       vendor/akismet
       vendor/flickr
