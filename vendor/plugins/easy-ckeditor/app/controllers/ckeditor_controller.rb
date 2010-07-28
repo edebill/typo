@@ -4,7 +4,7 @@ require 'tmpdir'
 class CkeditorController < ActionController::Base
 
   UPLOAD_FOLDER = "/files"
-  UPLOAD_ROOT = RAILS_ROOT + "/public" + UPLOAD_FOLDER
+  UPLOAD_ROOT = Rails.root + "/public" + UPLOAD_FOLDER
 
   MIME_TYPES = [
     "image/jpg",
@@ -161,10 +161,10 @@ class CkeditorController < ActionController::Base
   end
 
   ##############################################################################
-  # Puts a messgae info in the current log, only if RAILS_ENV is 'development'
+  # Puts a messgae info in the current log, only if Rails.env is 'development'
   #
   def log(str)
-    RAILS_DEFAULT_LOGGER.info str if RAILS_ENV == 'development'
+    Rails.logger.info str if Rails.env == 'development'
   end
 
   ##############################################################################
@@ -173,7 +173,7 @@ class CkeditorController < ActionController::Base
   def log_upload
     log "CKEDITOR - #{params[:upload]}"
     log "CKEDITOR - UPLOAD_FOLDER: #{UPLOAD_FOLDER}"
-    log "CKEDITOR - #{File.expand_path(RAILS_ROOT)}/public#{UPLOAD_FOLDER}/" +
+    log "CKEDITOR - #{File.expand_path(Rails.root)}/public#{UPLOAD_FOLDER}/" +
         "#{@new_file.original_filename}"
   end
 

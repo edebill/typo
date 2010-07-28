@@ -149,7 +149,7 @@ works substantially better.
 ### Typo crashes randomly
 
 First, try running Typo under Webrick in the foreground to see if you can
-reproduce the problem. Run `RAILS_ENV=production ./script/server webrick` from
+reproduce the problem. Run `Rails.env=production ./script/server webrick` from
 your Typo directory and then see if you can get it to crash. If it dies, then
 open a Trac ticket (http://typosphere.org/trac) describing the problem and
 include the crash message along with any relevant information from the logs.

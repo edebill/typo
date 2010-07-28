@@ -1,14 +1,14 @@
 # This file is copied to ~/spec when you run 'ruby script/generate rspec'
 # from the project root directory.
-ENV["RAILS_ENV"] ||= 'test'
-require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_ROOT)
+ENV["Rails.env"] ||= 'test'
+require File.dirname(__FILE__) + "/../config/environment" unless defined?(Rails.root)
 require 'spec/autorun'
 require 'spec/rails'
 
 Spec::Runner.configure do |config|
   config.use_transactional_fixtures = true
   config.use_instantiated_fixtures  = false
-  config.fixture_path = RAILS_ROOT + '/test/fixtures/'
+  config.fixture_path = Rails.root + '/test/fixtures/'
   config.global_fixtures =
     %w{ blogs categories categorizations contents
         feedback notifications page_caches profiles redirects resources sidebars
@@ -56,11 +56,11 @@ end
 # test standard view and all themes
 def with_each_theme
   yield nil, ""
-  Dir.new(File.join(RAILS_ROOT, "themes")).each do |theme|
+  Dir.new(File.join(Rails.root, "themes")).each do |theme|
     next if theme =~ /\.\.?/
-    view_path = "#{RAILS_ROOT}/themes/#{theme}/views" 
-    if File.exists?("#{RAILS_ROOT}/themes/#{theme}/helpers/theme_helper.rb")
-      require "#{RAILS_ROOT}/themes/#{theme}/helpers/theme_helper.rb"
+    view_path = "#{Rails.root}/themes/#{theme}/views" 
+    if File.exists?("#{Rails.root}/themes/#{theme}/helpers/theme_helper.rb")
+      require "#{Rails.root}/themes/#{theme}/helpers/theme_helper.rb"
     end
     yield theme, view_path
   end

@@ -22,10 +22,10 @@ ARGV.options do |opts|
   
 end
 
-ENV["RAILS_ENV"] = options[:environment]
-RAILS_ENV.replace(options[:environment]) if defined?(RAILS_ENV)
+ENV["Rails.env"] = options[:environment]
+Rails.env.replace(options[:environment]) if defined?(Rails.env)
 
-require RAILS_ROOT + '/config/environment'
+require Rails.root + '/config/environment'
 
-ActiveRecord::Migrator.migrate(RAILS_ROOT + "db/migrate/",
+ActiveRecord::Migrator.migrate(Rails.root + "db/migrate/",
                                ENV["VERSION"] ? ENV["VERSION"].to_i : nil )

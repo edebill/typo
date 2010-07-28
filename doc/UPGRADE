@@ -35,7 +35,7 @@ Upgrading should be a really easy process, depending on how you installed your t
 
 I assume you're running typo on a production environment, so firt run:
 
-$ export RAILS_ENV=production
+$ export Rails.env=production
 
 ** UPGRADING WITH TYPO INSTALLER FROM TYPO 2.0 to 5.0 **
 
@@ -84,7 +84,7 @@ Login in to your Typo admin using your favourite web browser. You'll access to t
 If something goes wrong, go back to your terminal, and run
 
 $ cd typo_path
-$ rake RAILS_ENV=production db:migrate
+$ rake Rails.env=production db:migrate
 
 If things really goes wrong, then please ask for help on the Typo mailing list or on IRC #typo@irc.freenode.net
 
@@ -125,7 +125,7 @@ Login in to your Typo admin using your favourite web browser. You'll access to t
 If something goes wrong, go back to your terminal, and run
 
 $ cd typo_path
-$ rake RAILS_ENV=production db:migrate
+$ rake Rails.env=production db:migrate
 
 If things really goes wrong, then please ask for help on the Typo mailing list or on IRC #typo@irc.freenode.net
 

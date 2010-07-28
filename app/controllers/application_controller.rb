@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
 
   def setup_themer
     # Ick!
-    self.view_paths = ::ActionController::Base.view_paths.dup.unshift("#{RAILS_ROOT}/themes/#{this_blog.theme}/views")
+    self.view_paths = ::ActionController::Base.view_paths.dup.unshift("#{Rails.root}/themes/#{this_blog.theme}/views")
   end
 
   def error(message = "Record not found...", options = { })

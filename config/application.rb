@@ -6,8 +6,8 @@ module Typo
     config.frameworks -= [ :active_resource ]
   
     # Setup the cache path
-    config.action_controller.page_cache_directory = "#{RAILS_ROOT}/public/cache/"
-    config.cache_store=:file_store, "#{RAILS_ROOT}/public/cache/"
+    config.action_controller.page_cache_directory = "#{Rails.root}/public/cache/"
+    config.cache_store=:file_store, "#{Rails.root}/public/cache/"
   
   
     # I need the localization plugin to load first
@@ -27,7 +27,7 @@ module Typo
       vendor/rails/activerecord/lib
       vendor/rails/actionmailer/lib
       app/apis
-    ).map {|dir| "#{RAILS_ROOT}/#{dir}"}.select { |dir| File.directory?(dir) }
+    ).map {|dir| "#{Rails.root}/#{dir}"}.select { |dir| File.directory?(dir) }
     
     # Use the filesystem for sessions instead of the database
     config.action_controller.session = { :key => "_typo_session", :secret => "8d7879bd56b9470b659cdcae88792622" }
@@ -73,9 +73,9 @@ module Typo
     end
   end
   
-  if RAILS_ENV != 'test'
+  if Rails.env != 'test'
     begin
-      mail_settings = YAML.load(File.read("#{RAILS_ROOT}/config/mail.yml"))
+      mail_settings = YAML.load(File.read("#{Rails.root}/config/mail.yml"))
   
       ActionMailer::Base.delivery_method = mail_settings['method']
       ActionMailer::Base.server_settings = mail_settings['settings']
