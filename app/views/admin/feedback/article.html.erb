@@ -1,7 +1,7 @@
 <% @page_heading = _("Comments for %s", @article.title) %>
 <% @link_to_new = link_to(_("Add a comment"), '#comment', {:id => 'dialog-link', :class => 'ui-state-default ui-corner-all'}) %>
 
-<% content_for (:tasks) do %>
+<%= content_for (:tasks) do %>
   <%= subtab(_('All comments'), {:action => :article, :id => @article.id, :ham => 'y', :spam => 'y'} ) %>
   <%= subtab(_('Limit to ham'), {:action => :article, :id => @article.id, :ham => 'y'}) %>
   <%= subtab(_('Limit to spam'), {:action => :article, :id => @article.id, :spam => 'y'}) %>
@@ -28,7 +28,7 @@
 
 <hr />  
 
-<% form_tag :action => "create" do %>
+<%= form_tag :action => "create" do %>
   <%= render :partial => "form" %>
   <%= cancel_or_save %>
 <% end %>
