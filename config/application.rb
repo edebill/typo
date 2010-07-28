@@ -30,11 +30,9 @@ module Typo
       vendor/rails/activerecord/lib
       vendor/rails/actionmailer/lib
       app/apis
+      lib
     ).map {|dir| "#{Rails.root}/#{dir}"}.select { |dir| File.directory?(dir) }
-    
-    # Use the filesystem for sessions instead of the database
-    config.action_controller.session = { :key => "_typo_session", :secret => "8d7879bd56b9470b659cdcae88792622" }
-    
+        
     # Disable use of the Accept header, since it causes bad results with our
     # static caching (e.g., caching an atom feed as index.html).
     config.action_controller.use_accept_header = false

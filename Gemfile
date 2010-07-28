@@ -3,7 +3,6 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.0.0.rc'
-
 gem 'htmlentities'
 gem 'json'
 gem 'calendar_date_select'
