@@ -3,7 +3,7 @@
   <td class='<%= comment_class item.state %>'><%= item.state %></td>
   <td>
     <div id="feedback_<%=item.id%>">
-      <%= link_to_remote(h(truncate(item.body, :length => 100)), :url => { :action => 'preview', :id => item.id })%>
+      <%= link_to(h(truncate(item.body, :length => 100)), :url => { :action => 'preview', :id => item.id }, :remote => true)%>
     </div>
     <%= show_actions item %>
   </td>

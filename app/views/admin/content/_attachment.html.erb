@@ -8,9 +8,9 @@
       end) -%>
 </li>
 <li id="attachment_add_<%= attachment_num.succ %>">
-  <%= link_to_remote _('Add Another Attachment'),
+  <%= link_to _('Add Another Attachment'),
     :url => { :action => "attachment_box_add", :id => attachment_num.succ },
-    :asynchronus => false -%>
+    :asynchronus => false, :remote => true -%>
 </li>
 
 <% if @article and @article.id %>
