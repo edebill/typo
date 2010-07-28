@@ -26,11 +26,11 @@ class Blog < ActiveRecord::Base
   include ConfigManager
   extend ActiveSupport::Memoizable
 
-  validate_on_create { |blog|
+  validate { |blog|
     unless Blog.count.zero?
       blog.errors.add_to_base("There can only be one...")
     end
-  }
+  }, :on => :create
 
   serialize :settings, Hash
 
