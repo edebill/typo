@@ -19,6 +19,6 @@ gem 'flickr', '~> 1.0.2'
 gem 'mysql', '2.8.1'
 
 gem 'factory_girl', '~> 1.3.1'
-gem 'rspec', :require => false
-gem 'rspec-rails', :require => false
+gem 'rspec'
+gem 'rspec-rails', '2.0.0.beta.19'
 gem 'ruby-debug'
