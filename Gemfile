@@ -16,3 +16,9 @@ gem 'addressable', '~> 2.1.0', :require => 'addressable/uri'
 gem 'mini_magick', '~> 1.3', :require => 'mini_magick'
 gem 'uuidtools', '~>2.1.1'
 gem 'flickr', '~> 1.0.2'
+gem 'mysql', '2.8.1'
+
+gem 'factory_girl', '~> 1.3.1'
+gem 'rspec', :require => false
+gem 'rspec-rails', :require => false
+gem 'ruby-debug'

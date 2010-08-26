@@ -4,4 +4,4 @@
 require File.expand_path('../config/application', __FILE__)
 require 'rake'
 
-Typo::Application.load_tasks
+TypoApp::Application.load_tasks

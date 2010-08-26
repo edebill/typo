@@ -1,107 +1,129 @@
-Typo::Application.routes.draw do
-  match '/' => 'articles#index'
-  match 'fm/filemanager/:action/:id' => 'Fm::Filemanager#index'
-  match ':year/:month' => 'articles#index', :as => :articles_by_month, :month => /\d{1,2}/, :year => /\d{4}/
-  match ':year/:month/page/:page' => 'articles#index', :as => :articles_by_month_page, :month => /\d{1,2}/, :year => /\d{4}/
-  match ':year' => 'articles#index', :as => :articles_by_year, :year => /\d{4}/
-  match ':year/page/:page' => 'articles#index', :as => :articles_by_year_page, :year => /\d{4}/
-  match 'admin' => 'admin/dashboard#index', :as => :admin
-  match 'articles.rss' => 'articles#index', :as => :rss, :format => 'rss'
-  match 'articles.atom' => 'articles#index', :as => :atom, :format => 'atom'
-  match 'articlerss/:id/feed.xml' => 'xml#articlerss', :as => :xml, :path_prefix => 'xml'
-  match 'commentrss/feed.xml' => 'xml#commentrss', :as => :xml, :path_prefix => 'xml'
-  match 'trackbackrss/feed.xml' => 'xml#trackbackrss', :as => :xml, :path_prefix => 'xml'
-  match 'rss' => 'xml#feed', :as => :xml, :type => 'feed', :format => 'rss', :path_prefix => 'xml'
-  match 'sitemap.xml' => 'xml#feed', :as => :xml, :type => 'sitemap', :format => 'googlesitemap', :path_prefix => 
-  match ':format/feed.xml' => 'xml#feed', :as => :xml, :type => 'feed', :path_prefix => 'xml'
-  match ':format/:type/feed.xml' => 'xml#feed', :as => :xml, :path_prefix => 'xml'
-  match ':format/:type/:id/feed.xml' => 'xml#feed', :as => :xml, :path_prefix => 'xml'
-  resources :comments do
-    collection do
-   :preview
-  end
-  
-  
+TypoApp::Application.routes.draw do |map|
+  # default
+  map.root :controller  => 'articles', :action => 'index'
+
+  # for Filemanager
+  map.connect 'fm/filemanager/:action/:id', :controller => 'Fm::Filemanager'
+  map.connect 'ckeditor/command', :controller => 'ckeditor', :action => 'command'
+  map.connect 'ckeditor/upload', :controller => 'ckeditor', :action => 'upload'
+
+  # TODO: use only in archive sidebar. See how made other system
+  map.articles_by_month ':year/:month', :controller => 'articles', :action => 'index', :year => /\d{4}/, :month => /\d{1,2}/
+  map.articles_by_month_page ':year/:month/page/:page', :controller => 'articles', :action => 'index', :year => /\d{4}/, :month => /\d{1,2}/
+  map.articles_by_year ':year', :controller => 'articles', :action => 'index', :year => /\d{4}/
+  map.articles_by_year_page ':year/page/:page', :controller => 'articles', :action => 'index', :year => /\d{4}/
+
+  map.admin 'admin', :controller  => 'admin/dashboard', :action => 'index'
+
+  # make rss feed urls pretty and let them end in .xml
+  # this improves caches_page because now apache and webrick will send out the
+  # cached feeds with the correct xml mime type.
+
+  map.rss 'articles.rss', :controller => 'articles', :action => 'index', :format => 'rss'
+  map.atom 'articles.atom', :controller => 'articles', :action => 'index', :format => 'atom'
+
+  map.with_options :controller => 'xml', :path_prefix => 'xml' do |controller|
+    controller.xml 'articlerss/:id/feed.xml', :action => 'articlerss'
+    controller.xml 'commentrss/feed.xml', :action => 'commentrss'
+    controller.xml 'trackbackrss/feed.xml', :action => 'trackbackrss'
+
+    controller.with_options :action => 'feed' do |action|
+      action.xml 'rss', :type => 'feed', :format => 'rss'
+      action.xml 'sitemap.xml', :format => 'googlesitemap', :type => 'sitemap', :path_prefix => nil
+      action.xml ':format/feed.xml', :type => 'feed'
+      action.xml ':format/:type/feed.xml'
+      action.xml ':format/:type/:id/feed.xml'
+    end
   end
 
-  resources :trackbacks
-  match '/live_search/' => 'articles#live_search', :as => :live_search_articles
-  match '/search/:q.:format' => 'articles#search', :as => :search
-  match '/search/' => 'articles#search', :as => :search_base
-  match '/archives/' => 'articles#archives'
-  match '/setup' => 'setup#index'
-  match '/setup/confirm' => 'setup#confirm'
-  match 'trackbacks/:id/:day/:month/:year' => 'trackbacks#create', :via => post
-  resources :categories
-  resources :categories
-  match '/category/:id/page/:page' => 'categories#show'
-  resources :tags
-  resources :tags
-  match '/tag/:id/page/:page' => 'tags#show'
-  match '/tags/page/:page' => 'tags#index'
-  match '/author/:id' => 'authors#show'
-  match '/author/:id.:format' => 'authors#show', :as => :xml, :format => /rss|atom/
-  match 'page/:page' => 'articles#index', :page => /\d+/
-  match 'pages/*name' => 'articles#view_page', :via => get
-  match 'stylesheets/theme/:filename' => 'theme#stylesheets', :via => get, :filename => /.*/
-  match 'javascripts/theme/:filename' => 'theme#javascript', :via => , :filename => /.*/
-  match 'images/theme/:filename' => 'theme#images', :via => , :filename => /.*/
-  match 'theme/static_view_test' => 'theme#static_view_test', :via => 
-  match 'plugins/filters/:filter/:public_action' => 'textfilter#public_action'
-  match 'previews/:id' => 'articles#preview'
-  match 'check_password' => 'articles#check_password'
-  match 'accounts' => 'accounts#index'
-  match 'accounts/:action' => 'accounts#index'
-  match 'accounts/:action/:id' => 'accounts#index', :id => 
-  match 'backend' => 'backend#index'
-  match 'backend/:action' => 'backend#index'
-  match 'backend/:action/:id' => 'backend#index', :id => 
-  match 'files' => 'files#index'
-  match 'files/:action' => 'files#index'
-  match 'files/:action/:id' => 'files#index', :id => 
-  match 'sidebar' => 'sidebar#index'
-  match 'sidebar/:action' => 'sidebar#index'
-  match 'sidebar/:action/:id' => 'sidebar#index', :id => 
-  match 'textfilter' => 'textfilter#index'
-  match 'textfilter/:action' => 'textfilter#index'
-  match 'textfilter/:action/:id' => 'textfilter#index', :id => 
-  match 'xml' => 'xml#index'
-  match 'xml/:action' => 'xml#index'
-  match 'xml/:action/:id' => 'xml#index', :id => 
-  match '/admin/advanced' => 'admin/advanced#index'
-  match '/admin/advanced/:action/:id' => 'admin/advanced#index', :id => 
-  match '/admin/cache' => 'admin/cache#index'
-  match '/admin/cache/:action/:id' => 'admin/cache#index', :id => 
-  match '/admin/categories' => 'admin/categories#index'
-  match '/admin/categories/:action/:id' => 'admin/categories#index', :id => 
-  match '/admin/comments' => 'admin/comments#index'
-  match '/admin/comments/:action/:id' => 'admin/comments#index', :id => 
-  match '/admin/content' => 'admin/content#index'
-  match '/admin/content/:action/:id' => 'admin/content#index', :id => 
-  match '/admin/profiles' => 'admin/profiles#index'
-  match '/admin/profiles/:action/:id' => 'admin/profiles#index', :id => 
-  match '/admin/feedback' => 'admin/feedback#index'
-  match '/admin/feedback/:action/:id' => 'admin/feedback#index', :id => 
-  match '/admin/general' => 'admin/general#index'
-  match '/admin/general/:action/:id' => 'admin/general#index', :id => 
-  match '/admin/pages' => 'admin/pages#index'
-  match '/admin/pages/:action/:id' => 'admin/pages#index', :id => 
-  match '/admin/resources' => 'admin/resources#index'
-  match '/admin/resources/:action/:id' => 'admin/resources#index', :id => 
-  match '/admin/sidebar' => 'admin/sidebar#index'
-  match '/admin/sidebar/:action/:id' => 'admin/sidebar#index', :id => 
-  match '/admin/textfilters' => 'admin/textfilters#index'
-  match '/admin/textfilters/:action/:id' => 'admin/textfilters#index', :id => 
-  match '/admin/themes' => 'admin/themes#index'
-  match '/admin/themes/:action/:id' => 'admin/themes#index', :id => 
-  match '/admin/trackbacks' => 'admin/trackbacks#index'
-  match '/admin/trackbacks/:action/:id' => 'admin/trackbacks#index', :id => 
-  match '/admin/users' => 'admin/users#index'
-  match '/admin/users/:action/:id' => 'admin/users#index', :id => 
-  match '/admin/settings' => 'admin/settings#index'
-  match '/admin/settings/:action/:id' => 'admin/settings#index', :id => 
-  match '/admin/tags' => 'admin/tags#index'
-  match '/admin/tags/:action/:id' => 'admin/tags#index', :id => 
-  match '*from' => 'articles#redirect'
-  match '/:controller(/:action(/:id))'
+
+  map.resources :comments, :name_prefix => 'admin_', :collection => [:preview]
+  map.resources :trackbacks
+
+  map.live_search_articles '/live_search/', :controller => "articles", :action => "live_search"
+  map.search '/search/:q.:format', :controller => "articles", :action => "search"
+  map.search_base '/search/', :controller => "articles", :action => "search"
+  map.connect '/archives/', :controller => "articles", :action => "archives"
+  map.connect '/setup', :controller => 'setup', :action => 'index'
+  map.connect '/setup/confirm', :controller => 'setup', :action => 'confirm'
+
+  # I thinks it's useless. More investigating
+  map.connect "trackbacks/:id/:day/:month/:year",
+    :controller => 'trackbacks', :action => 'create', :conditions => {:method => :post}
+
+  # Before use inflected_resource
+  map.resources :categories, :except => [:show, :update, :destroy, :edit]
+  map.resources :categories, :as => 'category', :only => [:show, :edit, :update, :destroy]
+
+  map.connect '/category/:id/page/:page', :controller => 'categories', :action => 'show'
+
+  # Before use inflected_resource
+  map.resources :tags, :except => [:show, :update, :destroy, :edit]
+  map.resources :tags, :as => 'tag', :only => [:show, :edit, :update, :destroy]
+
+  map.connect '/tag/:id/page/:page', :controller => 'tags', :action => 'show'
+  map.connect '/tags/page/:page', :controller => 'tags', :action => 'index'
+
+  map.connect '/author/:id', :controller => 'authors', :action => 'show'
+  map.xml '/author/:id.:format', :controller => 'authors', :action => 'show', :format => /rss|atom/
+
+  # allow neat perma urls
+  map.connect 'page/:page',
+    :controller => 'articles', :action => 'index',
+    :page => /\d+/
+
+  date_options = { :year => /\d{4}/, :month => /(?:0?[1-9]|1[012])/, :day => /(?:0[1-9]|[12]\d|3[01])/ }
+
+  map.with_options(:conditions => {:method => :get}) do |get|
+    get.connect 'pages/*name',:controller => 'articles', :action => 'view_page'
+
+    get.with_options(:controller => 'theme', :filename => /.*/, :conditions => {:method => :get}) do |theme|
+      theme.connect 'stylesheets/theme/:filename', :action => 'stylesheets'
+      theme.connect 'javascripts/theme/:filename', :action => 'javascript'
+      theme.connect 'images/theme/:filename',      :action => 'images'
+    end
+
+    # For the tests
+    get.connect 'theme/static_view_test', :controller => 'theme', :action => 'static_view_test'
+
+    map.connect 'plugins/filters/:filter/:public_action',
+      :controller => 'textfilter', :action => 'public_action'
+  end
+
+  map.connect 'previews/:id', :controller => 'articles', :action => 'preview'
+  map.connect 'check_password', :controller => 'articles', :action => 'check_password'
+
+  # Work around the Bad URI bug
+  %w{ accounts backend files sidebar textfilter xml }.each do |i|
+    map.connect "#{i}", :controller => "#{i}", :action => 'index'
+    map.connect "#{i}/:action", :controller => "#{i}"
+    map.connect "#{i}/:action/:id", :controller => i, :id => nil
+  end
+
+  %w{advanced cache categories comments content profiles feedback general pages
+     resources sidebar textfilters themes trackbacks users settings tags }.each do |i|
+    map.connect "/admin/#{i}", :controller => "admin/#{i}", :action => 'index'
+    map.connect "/admin/#{i}/:action/:id", :controller => "admin/#{i}", :action => nil, :id => nil
+  end
+
+  map.connect '*from', :controller => 'articles', :action => 'redirect'
+
+  map.connect(':controller/:action/:id') do |default_route|
+    class << default_route
+      def recognize_with_deprecation(path, environment = {})
+        RAILS_DEFAULT_LOGGER.info "#{path} hit the default_route buffer"
+        recognize_without_deprecation(path, environment)
+      end
+      alias_method_chain :recognize, :deprecation
+
+      def generate_with_deprecation(options, hash, expire_on = {})
+        RAILS_DEFAULT_LOGGER.info "generate(#{options.inspect}, #{hash.inspect}, #{expire_on.inspect}) reached the default route"
+        #         if RAILS_ENV == 'test'
+        #           raise "Don't rely on default route generation"
+        #         end
+        generate_without_deprecation(options, hash, expire_on)
+      end
+      alias_method_chain :generate, :deprecation
+    end
+  end
 end
