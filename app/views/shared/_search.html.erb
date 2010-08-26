@@ -1,6 +1,6 @@
-<% form_tag({:controller => 'articles',  :action => 'search'}, {:method => 'get', :id => 'sform'}) do %>
+<%= form_tag({:controller => 'articles',  :action => 'search'}, {:method => 'get', :id => 'sform'}) do %>
   <label for="q"><%=  _('Live Search') %></label><input type="text" id="q" name="q" value="" size="15" />
-<%= image_tag "spinner-blue.gif", :id => 'search_spinner', :style => 'display:none;' %>
+  <%= image_tag "spinner-blue.gif", :id => 'search_spinner', :style => 'display:none;' %>
 <% end %>
 <%= observe_field "q", :frequency => 1,
     :url => { :controller => "live", :action => "search" },
