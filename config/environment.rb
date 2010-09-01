@@ -61,7 +61,7 @@ require 'rails_patch/active_support'
 require 'login_system'
 require 'typo_version'
 $KCODE = 'u'
-require 'jcode'
+#require 'jcode'
 require 'transforms'
 
 $FM_OVERWRITE = true
