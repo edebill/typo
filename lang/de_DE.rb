@@ -1,3 +1,4 @@
+# encoding: utf-8
 Localization.define("de_DE") do |l|
 
   # app/controllers/accounts_controller.rb
