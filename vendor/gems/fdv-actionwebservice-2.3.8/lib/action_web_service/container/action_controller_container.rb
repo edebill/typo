@@ -36,7 +36,7 @@ module ActionWebService # :nodoc:
               define_method(name) do
                 create_web_service_client(api_klass, protocol, endpoint_uri, options)
               end
-              protected name
+#              protected name
             end
           end
         end
@@ -79,7 +79,13 @@ module ActionWebService # :nodoc:
           end
         end
 
+        def name
+          self.class.to_s
+        end
+
         private
+
+
           def inherited_with_api(child)
             inherited_without_api(child)
             begin child.web_service_api(child.controller_path)
