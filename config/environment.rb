@@ -29,6 +29,10 @@ Rails::Initializer.run do |config|
   config.gem 'uuidtools', :version => '~>2.1.1'
   config.gem 'flickr', :version => '~> 1.0.2'
   config.gem 'rubypants', :version => '~> 0.2.0'
+  config.gem 'test-unit', :version => '1.2.3', :lib => 'test/unit'
+  config.gem 'rspec', :version => '1.3.0', :lib => 'spec'
+  config.gem 'rspec-rails', :version => '1.3.2', :lib => 'spec/rails'
+
 
   # I need the localization plugin to load first
   # Otherwise, I can't localize plugins <= localization
