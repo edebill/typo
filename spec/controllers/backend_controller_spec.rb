@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require "spec_helper"
 require 'action_web_service/test_invoke'
 require 'backend_controller'
 require 'blogger_service'

@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require "spec_helper"
 
 describe 'Given a post which references a pingback enabled article' do
   def pingback_target; 'http://anotherblog.org/xml-rpc'; end
