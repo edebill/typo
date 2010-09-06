@@ -6,6 +6,12 @@ extension. It is available as a gem or source tarball.
 Current version is Typo 5.5 for Ruby on Rails 2.3.8.
 
 
+h1. About This Fork
+
+This fork is an attempt to port typo to run on Ruby 1.9.2.  Hopefully it can be merged back into the main branch at some point.
+
+
+
 h2. Useful Links:
 
 * "Download Typo 5.5 source code:":http://rubyforge.org/frs/?group_id=555&release_id=42715
