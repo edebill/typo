@@ -8,6 +8,10 @@ class ApplicationController < ActionController::Base
   before_filter :reset_local_cache, :fire_triggers, :load_lang
   after_filter :reset_local_cache
 
+  def name
+    self.class.to_s
+  end
+
   class << self
     unless self.respond_to? :template_root
       def template_root
